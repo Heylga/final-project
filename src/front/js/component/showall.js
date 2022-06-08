@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Card from "./card.js";
-import { Link } from "react-router-dom";
 import { Catcher } from "./../../img/catcher.jpg";
 import { Crime } from "./../../img/crime.jpg";
 import { littleprince } from "./../../img/littleprince.jpg";
 import { we } from "./../../img/we.jpg";
 
-const listCards = () => {
+const ShowAll = () => {
   const list = [
     {
       title: "The Catcher in the Rye",
@@ -172,37 +171,27 @@ const listCards = () => {
   ];
   const listOfCards = list.map((cardItem) => {
     return (
-      <Card
-        title={cardItem.title}
-        title2={cardItem.title2}
-        imageUrl={cardItem.imageUrl}
-        description={cardItem.description}
-        buttonLabel={cardItem.buttonLabel}
-      />
+      <div className="col">
+        <Card
+          title={cardItem.title}
+          title2={cardItem.title2}
+          imageUrl={cardItem.imageUrl}
+          description={cardItem.description}
+          buttonLabel={cardItem.buttonLabel}
+        />
+      </div>
     );
   });
+  // return <div className="conteiner center">{listOfCards}</div>;
   return (
-    <div className="container center">
-      <h1 className="text-center pt-5">Recent BookExchanged</h1>
-      <br></br>
-      <div
-        className="d-flex gap-2 m-1"
-        style={{
-          justifyContent: "center",
-        }}
-      >
-        {" "}
-        {listOfCards.slice(-4)}{" "}
-      </div>
-      <div className="col text-center">
-        <Link to="/allbooks">
-          <button type="button" className="btn btn-outline-primary me-1">
-            See all books
-          </button>
-        </Link>
+    <div>
+      <h1 className="text-center pt-5">All Books</h1>
+      <br />
+      <div className="container">
+        <div className="row row-cols-auto">{listOfCards}</div>
       </div>
     </div>
   );
 };
 
-export default listCards;
+export default ShowAll;
