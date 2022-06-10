@@ -13,7 +13,7 @@ const Card = (props) => {
         <h5 className="card-title text-center fw-bolder">{title2}</h5>
         <p className="card-text text-center" style={{ fontSize: "large" }}>
           {description.length > length
-            ? description.substring(0, 80) + "..."
+            ? description.substring(0, 55) + "..."
             : description}
         </p>
       </div>
