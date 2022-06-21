@@ -12,13 +12,13 @@ import Navbarlogin from "../component/navbar-login";
 export const Login = () => {
 
 	const URLbase = process.env.BACKEND_URL;
+  
+  	const { id } = useParams()
 
 	const { store, actions } = useContext(Context);
 	const [email, setEmail] = useState();
 	const [password, setPassword] = useState();
 	const [loggedIn, setLoggedIn] = useState(false);
-
-	const { id } = useParams()
 
 	const onTypeEmail = (e) => {
 		console.log(e.target.value);
