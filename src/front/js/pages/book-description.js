@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import Navbar from "../component/navbar";
-import ShowAll from "../component/showall.js";
+import BookLogicCard from "../component/book-description-logic";
 import Footer from "../component/footer.js";
 import "../../styles/index.css";
 
-export const AllBooks = () => {
-
+export const BookDescription = () => {
   const { store, actions } = useContext(Context);
 
   return (
     <div className="">
       <Navbar />
-      <ShowAll />
+      <BookLogicCard />
+      <button onClick={() => console.log(store.book)}>BOOK</button>
+
       <Footer />
     </div>
   );

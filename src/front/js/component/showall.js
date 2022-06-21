@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+
 import PropTypes from "prop-types";
 import Card from "./card.js";
 import { Catcher } from "./../../img/catcher.jpg";
 import { Crime } from "./../../img/crime.jpg";
 import { littleprince } from "./../../img/littleprince.jpg";
 import { we } from "./../../img/we.jpg";
+
 
 const ShowAll = () => {
   const list = [

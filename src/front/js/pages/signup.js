@@ -7,11 +7,13 @@ import { Context } from "../store/appContext";
 import Navbar from "./../component/navbar.js";
 import Footer from "./../component/footer";
 
+
 export const Signup = () => {
   const { store, actions } = useContext(Context);
 
-  const URLbase =
-    "https://3001-heylga-finalproject-n9ed77grnlm.ws-eu46.gitpod.io";
+  const URLbase = process.env.BACKEND_URL;
+
+  // const URLbase = "https://3001-heylga-finalproject-wy6lkyxgzdu.ws-eu47.gitpod.io"
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -19,6 +21,8 @@ export const Signup = () => {
   const [firstName, setFirstName] = useState();
   const [userName, setUserName] = useState();
   const [city, setCity] = useState();
+  const [picture, setPicture] = useState();
+
 
   const onSubmitClicked = () => {
     console.log("estoy haciendo click en submit");
@@ -31,11 +35,11 @@ export const Signup = () => {
     // city no vacio
     // password === repeatpassword
 
-    // if (email && password && repeatPassword && firstName && userName && city) {
-    if (email && password && repeatPassword) {
+    if (email && password && repeatPassword && firstName && userName && city) {
+    // if (email && password && repeatPassword) {
       if (password === repeatPassword) {
         // hacemos el fetch
-        onFetchSignUp(email, password);
+        onFetchSignUp(email, password, firstName, userName, city);
       } else {
         // las pass tienen que coincidir
         alert("the passwords have to be iqual");
@@ -46,31 +50,31 @@ export const Signup = () => {
     }
   };
 
-  const onFetchSignUp = (email, password, firstName, userName, city) => {
+
+  const onFetchSignUp = (email, password, first_name, user_name, city) => {
     // fetch
     const post = {
       method: "POST",
-      mode: "cors",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email: email,
         password: password,
-        firstName: firstName,
-        userName: userName,
+        first_name: first_name,
+        user_name: user_name,
         city: city,
+        // picture: picture,
       }),
     };
 
     console.log("info login", post);
 
     fetch(
-      // "https://3001-heylga-finalproject-etg7w4vxjqc.ws-eu46.gitpod.io/?vscodeBrowserReqId=1654284274346/api/hello"
-      "https://3001-heylga-finalproject-yddd4mn8nwc.ws-eu46.gitpod.io/?vscodeBrowserReqId=1654506773081/api/signup",
+      `${URLbase}/api/signup`,
       post
     )
-      // fetch(`${URLbase}/api/signup`, signup)
+
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.log("error", error));
@@ -105,6 +109,12 @@ export const Signup = () => {
     console.log(e.target.value);
     setCity(e.target.value);
   };
+
+  const onTypePicture = (e) => {
+    console.log(e.target.value);
+    setPicture(e.target.files[0]);
+  };
+
 
   return (
     <div className="">
@@ -216,13 +226,16 @@ export const Signup = () => {
 
             <div className="col-md-6">
               <div className="wrapper">
-                <input type="file" className="my_file mt-1"></input>
+                <input type="file" className="my_file mt-1"
+                onChange={onTypePicture}>
+                </input>
               </div>
 
-              <div class="col text-center">
+              <div className="col text-center">
                 <button
                   type="submit"
                   onClick={onSubmitClicked}
+
                   className="btn btn-primary text-center"
                 >
                   Submit

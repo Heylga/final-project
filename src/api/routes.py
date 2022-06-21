@@ -2,36 +2,55 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Book
 from api.utils import generate_sitemap, APIException
+
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+
 from flask_jwt_extended import create_access_token
 # from models import User, Book
 
+from werkzeug.security import generate_password_hash
 
 
 api = Blueprint('api', __name__)
 
-# Create a route to authenticate your users and return JWTs. The
-# create_access_token() function is used to actually generate the JWT.
-
-# @api.route("/token", methods=["POST"])
-# def create_token():
-#     email = request.json.get("email", None)
-#     password = request.json.get("password", None)
-#     if email != "test" or password != "test":
-#         return jsonify({"msg": "Bad email or password"}), 401
-
-#     access_token = create_access_token(identity=email)
-#     return jsonify(access_token=access_token) 
-
-
-@api.route('/hello', methods=['GET'])
-def hello():
-    print('hello world')
-    return 'valid response'
 
 @api.route('/signup', methods=['POST'])
 def signup():
+
+    request_body = request.get_json(force=True)
+
+    email = request.json.get('email', None)
+    password = request.json.get('password', None)
+    user_name = request.json.get('user_name', None)
+    first_name = request.json.get('first_name', None)
+    city = request.json.get('city', None)
+
+    hashed_password = generate_password_hash(password)
+
+    access_token = create_access_token(identity=email)
+    print('hola me estan llamando', request_body, access_token)
+
+    user = User(
+        email = email,
+        password = hashed_password,
+        user_name = user_name,
+        first_name = first_name,
+        city = city,
+    )
+
+    answer = user.create()
+
+    response_body = {
+         "message": answer,
+         "user": user.serialize()
+     }
+
+    return jsonify(response_body), 200
+    
+@api.route('/login', methods=['POST'])
+def login():
 
     request_body = request.get_json(force=True)
 
@@ -39,83 +58,117 @@ def signup():
     email = request.json.get('email', None)
     password = request.json.get('password', None)
 
-    access_token = create_access_token(identity=email)
-    print('hola me estan llamando', request_body, access_token)
+    found_user = User.query.filter_by(email=email).first()
 
-    user = User(
-        email = email,
-        password = password,
+
+    if found_user and found_user.password == password:
+        token = create_access_token(identity=email)
+        return {
+            "message": "User logged in",
+            "token": token,
+            "user": found_user.serialize()
+            }, 200
+    else:
+        return {"error":"user and password not valid"}, 400
+
+
+
+@api.route('/edit-profile/<int:id>', methods=['PUT'])
+def editprofile(id):
+
+    user = User.query.filter_by(id=id)
+
+    email = request.json.get('email', None)
+    password = request.json.get('password', None)
+    user_name = request.json.get('user_name', None)
+    first_name = request.json.get('first_name', None)
+    city = request.json.get('city', None)
+
+    if (email or password or user_name or first_name or city):
+            if email != None:
+                user.email = email
+            if password != None:
+                user.password = password
+            if  user_name  != None:  
+                user.user_name = user_name 
+            if first_name != None:
+                user.first_name = first_name
+            if city != None:
+                user.city = city
+            
+            db.session.commit()
+            return 'success, the infromation has been updated'
+            
+            return jsonify({'results': user.serialize()}),200
+
+
+@api.route('/offerbook', methods=['POST'])
+def offerbook():
+
+    request_body = request.get_json(force=True)
+
+
+    title = request.json.get('title')
+    author = request.json.get('author')
+    publisher = request.json.get('publisher')
+    genre = request.json.get('genre')
+    language = request.json.get('language')
+    description = request.json.get('description')
+    # book_picture = request.json.get('book_picture')
+
+    print('hola me estan llamando', request_body)
+
+    book = Book(
+        title = title,
+        author = author,
+        publisher= publisher,
+        genre= genre,
+        language= language,
+        description= description,
+        # book_picture= book_picture,
     )
 
-    user.create()
+    answer = book.addBook()
 
     response_body = {
-         "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request",
-         "access_token": access_token,
-         "user": user.serialize()
+         "message": answer,
+         "book": book.serialize()
      }
 
     return jsonify(response_body), 200
-    
+
+# We query all books
+@api.route("/books", methods=["GET"])
+def getBooks():
+    queryBooks = Book.query.all()
+    queryBooks = list(map(lambda x: x.listOfBooks(), queryBooks))
+    print(queryBooks)
+
+    response_body = {
+        "results": queryBooks
+    }
 
 
-@api.route('/login', methods=['POST'])
-def login_user(email, password):
+    return jsonify(response_body), 200
 
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
+# We query one book
+@api.route('/book/<int:id>', methods=['GET'])
+def get_book(id = None):
+    query_book = Book.query.filter_by(id=id).first()
+    if not query_book:
+        return jsonify({"message": "No book found!"})
 
-    print('email', email, 'password', password)
-
-    if email != "test" or password != "test":
-        return {"error": "Wrong email or password"}, 400
-
-    # access_token = create_access_token(identity=email)
-    # response = {"access_token":access_token}
-    return response.jsonify({"msg": "user created"}), 200
+    query_a_book = query_book.listOfBooks()
 
 
+    print("####################")
+    print(query_a_book)
+    print("####################")
 
-# @api.route('/signup', methods=['GET','POST'])
-# def register_user(email, password):
+    response_body = {
+        "results": query_a_book
+    }
 
-#     email = request.json.get("email", None)
-#     password = request.json.get("password", None)
-
-#     #Now we need to create a list of information which should be passed to the DataBase
-#     #We dont need to mention ID here, because its set up automatically
-#     our_user = User (
-
-#         email = email,
-#         password = password,
-#         is_active = False,
-
-#     )
-
-#     #save the user (from models.py)
-#     our_user.save_user()
-    
-#     return jsonify(our_user.serialize())
-
-
-
-# @api.route('/book', methods=['POST'])
-# def register_book():
-
-#     response_body = {
-#         "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-#     }
-
-#     return jsonify(response_body), 200
-
-#     #save the user (from models.py)
-#     our_user.save_book()
-    
-#     return jsonify(our_book.serialize())
-
-
-
-
-
-
+        
+    return jsonify(response_body), 200
 
