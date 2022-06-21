@@ -1,16 +1,33 @@
-import { URLbase } from "../../../../secrets";
-
 const getState = ({ getStore, getActions, setStore }) => {
-	return {
-		store: {
-			user: [],
-			isLoggedIn: false,
-			accessToken: null,
 
-		},
-		actions: {
-
-			login: (email, password) => {
+  return {
+    store: {
+      URLbase: process.env.BACKEND_URL,
+			user: JSON.parse(localStorage.getItem("user")) || {},
+			isLoggedIn: JSON.parse(localStorage.getItem("user")) || false,
+			token: localStorage.getItem("token") || null,
+      message: null,
+      books: [],
+      book: [],
+			favorite: [],
+      demo: [
+        {
+          title: "FIRST",
+          background: "white",
+          initial: "white",
+        },
+        {
+          title: "SECOND",
+          background: "white",
+          initial: "white",
+        },
+      ],
+    },
+    actions: {
+      
+       // USERS
+      
+      	login: (email, password) => {
 				// fetch
 				const post = {
 					method: "POST",
@@ -26,18 +43,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log("info login desde las actions", post);
 
 				fetch(
-					`${URLbase}/api/login`,
+					process.env.BACKEND_URL + "/api/login/",
 					post
 				)
 
 					.then((response) => response.json())
 					.then((result) => {
-						console.log('result from actions', result)
+						console.log('>>>> result from actions', result)
 						setStore({
 							user: result?.user,
-							accessToken: result?.access_token,
+							token: result?.token,
 							isLoggedIn: true,
 						})
+
+
+						localStorage.setItem("user", JSON.stringify(result.user))
+						localStorage.setItem("token", result.token)
+
+						console.log("info del user desde local storage---->>>>", JSON.parse(localStorage.getItem("user")))
 					})
 					.catch((error) => console.log("error", error));
 			},
@@ -47,44 +70,122 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({
 					user: null,
 					isLoggedIn: false,
-					accessToken: null,
+					token: null,
 				})
+
+				localStorage.removeItem("token")
+				localStorage.removeItem("user")
+				localStorage.removeItem("user_name")
+				localStorage.removeItem("first_name")
+				localStorage.removeItem("user_name")
+				localStorage.removeItem("city")
+
 			},
 
-			loadData: () => {
-				fetch(`${URLbase}/api/signup`)
-					.then(response => response.json())
-					.then(data => setStore({ character: data.results }))
-					.catch(error => console.error(error));
-			},
+		editUserInformation: () => {
 
-
-
-			getMessage: () => {
-				// fetching data from the backend
-				fetch(process.env.BACKEND_URL + "/api/hello")
-					.then(resp => resp.json())
-					.then(data => setStore({ message: data.message }))
-					.catch(error => console.log("Error loading message from backend", error));
-			},
-
-
-			changeColor: (index, color) => {
-				//get the store
 				const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+				fetch(
+					process.env.BACKEND_URL + "/api/edit-profile/" , {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							 Accept: "application/json",
+						},
+						body: JSON.stringify(),
+					})
+					if (response.ok) {
+						alert("The info has been saved");
+					  } else {
+						alert("The info has NOT been saved");
+					  }
+			},
 
-				//reset the global store
-				setStore({ demo: demo });
-			}
-		}
-	};
+
+      
+			addFavorite: item => {
+				const store = getStore();
+				const validate = store.favorite.includes(item);
+				if (store.favorite == [] || !validate) {
+					setStore({ favorite: [...store.favorite, item] });
+				}
+			},
+
+			deleteFavorite: id => {
+				const store = getStore();
+				const updatedList = [...store.favorite];
+				updatedList.splice(id, 1);
+				setStore({ favorite: [...updatedList] });
+			},
+      
+      // BOOKS
+      fetchBooks: () => {
+        fetch(process.env.BACKEND_URL + "/api/books", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((promiseResponse) => promiseResponse.json())
+          .then((data) => setStore({ books: data.results }));
+      },
+
+      fetchBook: (id) => {
+        console.log("fechtBook");
+        const store = getStore();
+        fetch(process.env.BACKEND_URL + "/api/book/" + id, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            setStore({ book: result.results });
+            console.log("BOOK =====", store.book);
+          })
+          .catch((error) => console.log("error", error));
+        // .then((promiseResponse) => {
+        //   promiseResponse.json();
+        //   console.log("resp =", promiseResponse);
+        // })
+        // .then((data) => setStore({ book: data.results }))
+        // .catch((error) =>
+        //   console.log("Error loading message from backend", error)
+        // );
+      },
+      exampleFunction: () => {
+        getActions().changeColor(0, "green");
+      },
+
+
+
+      getMessage: () => {
+        // fetching data from the backend
+        fetch(process.env.BACKEND_URL + "/api/hello")
+          .then((resp) => resp.json())
+          .then((data) => setStore({ message: data.message }))
+          .catch((error) =>
+            console.log("Error loading message from backend", error)
+          );
+      },
+      changeColor: (index, color) => {
+        //get the store
+        const store = getStore();
+
+        //we have to loop the entire demo array to look for the respective index
+        //and change its color
+        const demo = store.demo.map((elm, i) => {
+          if (i === index) elm.background = color;
+          return elm;
+        });
+
+        //reset the global store
+        setStore({ demo: demo });
+      },
+    },
+  };
 };
 
 export default getState;

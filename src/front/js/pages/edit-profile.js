@@ -5,9 +5,70 @@ import Footer from "../component/footer.js";
 import { Link } from "react-router-dom";
 import "../../styles/index.css";
 import Navbarlogin from "../component/navbar-login";
+import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 
 export const EditProfile = () => {
   const { store, actions } = useContext(Context);
+  const [info, setInfo] = useState({});
+
+
+  const URLbase = process.env.BACKEND_URL;
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [first_name, setFirstName] = useState();
+  const [user_name, setUserName] = useState();
+  const [city, setCity] = useState();
+  const [picture, setPicture] = useState();
+
+
+  // const onSubmitClicked = () => {
+  //   console.log("estoy haciendo click en submit");
+
+  //   if (email && password && user_name && first_name && city) {
+  //       onFetchUpdate(email, password, user_name, first_name, city);
+  //   } 
+  // };
+
+
+  // const onFetchUpdate = (email, password, user_name, first_name, city) => {
+  //   // fetch
+  //   const put = {
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       email: email,
+  //       password: password,
+  //       first_name: first_name,
+  //       user_name: user_name,
+  //       city: city,
+  //     }),
+  //   };
+
+  //   console.log("updating info", put);
+
+  //   fetch(
+  //     `${URLbase}/api/edit-profile/` + id,
+  //     put
+  //   )
+
+  //     .then((response) => response.text())
+  //     .then((result) => console.log(result))
+  //     .catch((error) => console.log("error", error));
+  // };
+
+  // const saveInfo = (e) => {
+  //     setInfo(e.target.value);
+  //     console.log(e.target.value)
+  // }
+
+  const onTypeEmail = (e) => {
+    console.log(e.target.value);
+    setEmail(e.target.value);
+  };
+
 
   return (
     <div className="">
@@ -23,25 +84,38 @@ export const EditProfile = () => {
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <h4 className="text-right">Edit Profile Info</h4>
               </div>
-              <div className="row mt-2">
+
+              <div className="row mt-3">
                 <div className="col-md-8">
-                  <label className="labels">Full Name</label>
+                  <label className="labels">First Name</label>
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Full name"
-                    value=""
+                    placeholder={store.user.first_name}
                   />
                 </div>
+                </div>
+
+                <div className="row mt-3">
+                <div className="col-md-8">
+                  <label className="labels">User Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder={store.user.user_name}
+                  />
+                </div>
+
               </div>
+
               <div className="row mt-3">
                 <div className="col-md-8">
                   <label className="labels">Email</label>
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Email"
-                    value=""
+                    placeholder={store.user.email}
+                    onChange={onTypeEmail}
                   />
                 </div>
                 <div className="col-md-8">
@@ -49,18 +123,12 @@ export const EditProfile = () => {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Email"
-                    value=""
+                    placeholder="Mobile"
                   />
                 </div>
                 <div className="col-md-8">
                   <label className="labels">Birthday</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Birthday"
-                    value=""
-                  />
+                  <input className="form-control" type="date" id="birthday" name="birthday" style={{color: "grey"}}/>
                 </div>
                 <div className="col-md-8">
                   <label className="labels">Address Line</label>
@@ -68,7 +136,6 @@ export const EditProfile = () => {
                     type="text"
                     className="form-control"
                     placeholder="Address Line"
-                    value=""
                   />
                 </div>
                 <div className="col-md-8">
@@ -77,7 +144,6 @@ export const EditProfile = () => {
                     type="text"
                     className="form-control"
                     placeholder="Postcode"
-                    value=""
                   />
                 </div>
                 <div className="col-md-8">
@@ -86,7 +152,6 @@ export const EditProfile = () => {
                     type="text"
                     className="form-control"
                     placeholder="State"
-                    value=""
                   />
                 </div>
                 <div className="col-md-8">
@@ -94,8 +159,7 @@ export const EditProfile = () => {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="City"
-                    value=""
+                    placeholder={store.user.city}
                   />
                 </div>
                 <div className="col-md-8">
@@ -104,10 +168,10 @@ export const EditProfile = () => {
                     type="text"
                     className="form-control"
                     placeholder="Country"
-                    value=""
                   />
                 </div>
               </div>
+
 
               <Link to="/security">
               <button type="button" class="btn btn-outline-secondary my-3">Change Password</button>
@@ -130,20 +194,27 @@ export const EditProfile = () => {
             </div>
             <div className="mt-5 text-center">
               <button
-                className="btn btn-primary edit-profile-button"
+                className="btn btn-primary edit-profile-button "
                 type="submit"
+                onClick={(event) => {
+                  event.preventDefault();
+                  actions.editUserInformation();
+                }}
+                // onClick={onSubmitClicked}
               >
                 Save Changes
               </button>
               <br />
-              <Link to="/profile">
-                <button className="btn btn-primary justify-content-center">
+              <Link to="/my-profile">
+                <button className="btn btn-primary justify-content-center mt-3"
+                >
                   Cancel
                 </button>
               </Link>
             </div>
           </div>
           {/* Profile photo ends */}
+          
         </div>
       </div>
       <Footer />
