@@ -9,6 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       user: JSON.parse(localStorage.getItem("user")) || {},
       isLoggedIn: JSON.parse(localStorage.getItem("user")) || false,
+      isRegistered: JSON.parse(localStorage.getItem("user")) || false,
       token: localStorage.getItem("token") || null,
       usersbooks: [],
       users: [],
@@ -30,6 +31,31 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       // REGISTRATION (INSIDE /SIGNUP) AND LOGIN USER
+
+      register: (email, password, name, city) => {  // fetch
+        const post = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            name: name,
+            city: city,
+          }),
+        };
+    
+        console.log("info signup", post);
+    
+        fetch(
+          `${URLbase}/api/signup`,
+          post
+        )
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) => console.log("error", error));
+      },
 
       login: (email, password) => {
         // fetch
