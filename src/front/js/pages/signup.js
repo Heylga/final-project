@@ -32,6 +32,7 @@ export const Signup = () => {
 
 
   const onSubmitClicked = () => {
+
     console.log("estoy haciendo click en submit");
     // obtener email, password, repeatpassword, firstName, userName, city
     // email no vacio
@@ -48,7 +49,7 @@ export const Signup = () => {
         // hacemos el fetch
         actions.register(email, password, name, city)
         // onFetchSignUp(email, password, name, city);
-        alert("You have been succesfully registered") && <Redirect to={Home}/>
+        alert("You have been succesfully registered") && userauthenticationHandler
       } else {
         // las pass tienen que coincidir
         alert("the passwords have to be iqual");
@@ -59,6 +60,13 @@ export const Signup = () => {
     }
   };
 
+
+  // const userauthenticationHandler = (e) => {
+  //     if (user && user.password === password) {
+  //       setathenticated(true)
+  //       localStorage.setItem("authenticated", true);
+  //     }
+  // }
 
   const onFetchSignUp = (email, password, name, city) => {
     // fetch
@@ -182,7 +190,7 @@ export const Signup = () => {
 
         </div>
       {/* </div> */}
-      {/* 
+      {/*
       <div className="col-md-6"> */}
       {/* <div className="wrapper">
           <input type="file" className="my_file mt-1"
@@ -196,12 +204,13 @@ export const Signup = () => {
           type="submit"
           className="btn btn-primary float-end mt-5 me-5"
           onClick={onSubmitClicked}
-        
+          onSubmit={(e) => <Redirect to="/" />}
 
         // className="btn btnsign btn-outline-light-me me-1 btn-primary text-center"
         >
           Submit
         </button>
+
       </div>
       {/* </div> */}
     </div>
@@ -237,7 +246,7 @@ const RegisterRender = store.isRegistered
 
   return (
     <div className="">
-     
+
      {RegisterRender}
 
       <Footer />
