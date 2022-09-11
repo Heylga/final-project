@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Redirect } from "react-router-dom";
 import "../../styles/home.css";
+import Axios from 'axios';
+import {Iamge} from 'cloudinary-react'
 
 import Footer from "./../component/footer";
 import Navbarlogin from "../component/navbar-login";
@@ -107,12 +109,22 @@ export const Offerbook = () => {
 
   const [baseImage, setBaseImage] = useState("");
 
-  const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setBaseImage(base64);
-    console.log(base64);
+  const [imageSelected, setImageSelected] = useState();
+
+  const uploadImage = () => {
+    const formData = new formData()
+    formData.append("file", imageSelected)
+    formData.append("upload_preset", "ey0danoq")
+    // console.log(files[0]);
+
+    Axios.post("https://api.cloudinary.com/v1_1/heylga/image/upload", 
+    formData
+    ).then((response) => {
+      console.log(response);
+    });
   };
+
+
 
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -236,9 +248,12 @@ export const Offerbook = () => {
                   id="formFileMultiple"
                   multiple
                   onChange={(e) => {
-                    uploadImage(e);
+                    setImageSelected(e.target.files[0]);
                   }}
                 />
+                <button onClick={uploadImage}>Upload Image</button>
+                <Image cloudName="heylga" 
+                publicId=""/>
               </div>
 
             </div>
