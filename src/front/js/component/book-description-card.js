@@ -27,10 +27,10 @@ const BookCard = (props) => {
         <div className="col-md-7">
           <div className="mt-2">
             <p>
-              <Link style={{textDecoration: 'bold', color: '#7d6757', fontfamily: 'Libre Baskerville', }} to={`/user/${id}`}>
+              <Link style={{ textDecoration: 'bold', color: '#7d6757', fontfamily: 'Libre Baskerville', }} to={`/user/${id}`}>
                 {/* {store.book.owner_id} */}
                 Olga
-                </Link> is offering: 
+              </Link> is offering:
             </p>
           </div>
           <div className="d-flex flex-column align-items-center text-center p-1 pb-5">
@@ -40,7 +40,7 @@ const BookCard = (props) => {
             <img
               className="mt-2"
               width="250px"
-              src="https://picsum.photos/200/300"
+              src={book_picture}
             />
           </div>
         </div>

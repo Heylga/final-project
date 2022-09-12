@@ -19,7 +19,7 @@ const listCards = () => {
         id={cardItem.id}
         title={cardItem.title}
         author={cardItem.author}
-        imageUrl={cardItem.imageUrl}
+        book_picture={cardItem.book_picture}
         description={cardItem.description}
         buttonLabel={cardItem.buttonLabel}
       />

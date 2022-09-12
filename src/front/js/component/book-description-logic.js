@@ -12,11 +12,11 @@ const BookLogicCard = () => {
     <BookCard
 
       id={store.book.book_id}
-      // book_picture={store.book_picture}
+      book_picture={store.book.book_picture}
       title={store.book.title}
       author={store.book.author}
       publisher={store.book.publisher}
-      genre={store.book.publisher}
+      genre={store.book.genre}
       language={store.book.language}
       description={store.book.description}
     />

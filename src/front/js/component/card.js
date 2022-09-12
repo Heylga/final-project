@@ -12,17 +12,17 @@ import "../../styles/home.css";
 
 const Card = (props) => {
   const { store, actions } = useContext(Context);
-  const { id, title, author, imageUrl, description, buttonLabel } = props;
+  const { id, title, author, book_picture, description, buttonLabel } = props;
 
 
   return (
     <div className="card my-4 gap-1" style={{ width: "18rem" }}>
       <img
-              className="container align-item-center center pt-1"
-              width="250px"
-              height="160px"
-              src="https://picsum.photos/200/300"
-            /> 
+        className="container align-item-center center pt-1"
+        width="200px"
+        height="330"
+        src={book_picture}
+      />
 
       <div className="card-body mt-2 mb-4" style={{ height: "10rem" }}>
         <h4 className="card-title text-center fw-bolder">{title}</h4>
@@ -53,7 +53,7 @@ const Card = (props) => {
 
 Card.propTypes = {
   id: PropTypes.string,
-  imageUrl: PropTypes.string,
+  book_picture: PropTypes.string,
   title: PropTypes.string,
   author: propTypes.string,
   description: PropTypes.string,

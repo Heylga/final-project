@@ -69,7 +69,7 @@ class Book(db.Model):
     genre = db.Column(db.String(120), unique=False, nullable=False)
     language = db.Column(db.String(120), unique=False, nullable=False)
     description = db.Column(db.String(1200), unique=False, nullable=False)
-    # book_picture = db.Column(db.Text, unique=False, nullable=False)
+    book_picture = db.Column(db.Text)
     owner_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=True)
     
     def __repr__(self):
@@ -91,7 +91,7 @@ class Book(db.Model):
             "language": self.language,
             "description": self.description,
             "owner_id": self.owner_id,
-            # "book_picture": self.book_picture,
+            "book_picture": self.book_picture,
         }
     
 

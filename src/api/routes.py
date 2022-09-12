@@ -118,7 +118,7 @@ def offerbook():
     language = request.json.get('language')
     description = request.json.get('description')
     owner_id = request.json.get('owner_id')
-    # book_picture = request.json.get('book_picture')
+    book_picture = request.json.get('book_picture')
 
     print('hola me estan llamando', request_body)
 
@@ -129,8 +129,8 @@ def offerbook():
         genre= genre,
         language= language,
         description= description,
-        owner_id = owner_id
-        # book_picture= book_picture,
+        owner_id = owner_id,
+        book_picture= book_picture,
     )
 
     answer = Book.addBook(book)

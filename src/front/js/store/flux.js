@@ -46,7 +46,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         console.log("info login desde las actions", post);
         fetch(
 
-          process.env.BACKEND_URL + "/api/login/",
+          process.env.URLbase + "/api/login/",
           post
         )
 
@@ -102,7 +102,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         console.log("info login desde las actions", put);
 
-        fetch(process.env.BACKEND_URL + "/api/edit-profile/" + user_id, put)
+        fetch(process.env.URLbase + "/api/edit-profile/" + user_id, put)
 
           .then(response => response.text())
           .then(result => console.log('>>>> result from actions', result))
@@ -123,7 +123,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         console.log("info login desde las actions", put);
 
-        fetch(process.env.BACKEND_URL + "/api/security", put)
+        fetch(process.env.URLbase + "/api/security", put)
 
           .then(response => response.text())
           .then(result => console.log('>>>> result from actions', result))
@@ -136,7 +136,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       fetchUsersBooks: () => {
 
 
-        fetch(process.env.BACKEND_URL + "/api/booksbyuser", {
+        fetch(process.env.URLbase + "/api/booksbyuser", {
 
           method: "GET",
           headers: {
@@ -155,7 +155,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         console.log("fechtBook");
         const store = getStore();
 
-        fetch(process.env.BACKEND_URL + "/api/book/" + book_id, {
+        fetch(process.env.URLbase + "/api/book/" + book_id, {
 
           method: "GET",
           headers: {
@@ -172,7 +172,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       fetchBooks: () => {
 
-          fetch(process.env.BACKEND_URL + "/api/books", 
+        fetch(process.env.URLbase + "/api/books",
 
           {
             method: "GET",
@@ -189,8 +189,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       fetchUsers: () => {
 
-        // fetch(process.env.BACKEND_URL + "/api/users", {
-        fetch(process.env.BACKEND_URL + "/api/users", {
+        // fetch(process.env.URLbase   + "/api/users", {
+        fetch(process.env.URLbase + "/api/users", {
 
           method: "GET",
           headers: {
@@ -206,13 +206,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         const store = getStore();
 
-        fetch(process.env.BACKEND_URL + "/api/user/" + user_id, 
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
+        fetch(process.env.URLbase + "/api/user/" + user_id,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
           .then((response) => response.json())
           .then((result) => {
             setStore({ user: result.results });

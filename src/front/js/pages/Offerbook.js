@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Redirect } from "react-router-dom";
+import { Axios } from "axios";
 import "../../styles/home.css";
 
 import Footer from "./../component/footer";
@@ -17,17 +18,19 @@ export const Offerbook = () => {
   const [language, setLanguage] = useState();
   const [description, setDescription] = useState();
   const [owner_user_id, setowner_user_id] = useState();
-  // const [book_picture, setBookPicture] = useState();
+  const [book_picture, setBookPicture] = useState();
+  const [baseImage, setBaseImage] = useState("");
 
 
-  const URLbase = process.env.BACKEND_URL
+
+  const URLbase = process.env.URLbase
 
   const onSubmit = () => {
     console.log("submit working");
 
-    if (title && author && publisher && genre && language && description) {
+    if (title && author && publisher && genre && language && description && baseImage) {
       // hacemos el fetch
-      FetchOfferBook(title, author, publisher, genre, language, description);
+      FetchOfferBook(title, author, publisher, genre, language, description, baseImage);
       alert("Your book has been added");
       // <Redirect to="/my-profile" />
     } else {
@@ -43,8 +46,11 @@ export const Offerbook = () => {
     genre,
     language,
     description,
+    book_picture
   ) => {
     // fetch
+
+    console.log(book_picture, "Esta es la imagen")
     const post = {
       method: "POST",
       headers: {
@@ -58,6 +64,7 @@ export const Offerbook = () => {
         language: language,
         description: description,
         owner_name: store.user.name,
+        book_picture: book_picture,
         // owner_name: store.user.name
       }),
     };
@@ -105,7 +112,7 @@ export const Offerbook = () => {
     setBookPicture(e.target.value);
   };
 
-  const [baseImage, setBaseImage] = useState("");
+
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
@@ -128,6 +135,22 @@ export const Offerbook = () => {
       };
     });
   };
+
+  const [imageSelected, setImageSelected] = useState("");
+
+  // const uploadImage = () => {
+  //   console.log(imageSelected)
+  //   const formData = new FormData()
+  //   formData.append("file", imageSelected)
+  //   formData.append("upload_preset", "uwpqshnd")
+
+  //   Axios.post("thttps://api.cloudinary.com/v1_1/josesoares/image/upload",
+  //     formData
+  //   ).then((response) => {
+  //     console.log(response);
+  //   });
+
+  // };
 
   return (
     <div>
@@ -239,6 +262,15 @@ export const Offerbook = () => {
                     uploadImage(e);
                   }}
                 />
+
+                {/* <input
+                  className="form-control"
+                  type="file"
+                  id="formFileMultiple"
+                  multiple
+                  onChange={(event) => {
+                    setImageSelected(event.target.files[0]);
+                  }} /> */}
               </div>
 
             </div>
@@ -246,7 +278,7 @@ export const Offerbook = () => {
               <button
                 type="submit"
                 className="btn btn-primary float-end mt-5 me-5"
-                onClick={onSubmit}
+                onClick={() => { onSubmit() }}
               >
                 Submit
               </button>
