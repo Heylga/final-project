@@ -11,7 +11,7 @@ import { URLbase } from "../../../../secrets.js";
 
 export const Login = () => {
 
-  const URLbase = process.env.BACKEND_URL;
+  const URLbase = process.env.URLbase;
 
   const { store, actions } = useContext(Context);
   const [email, setEmail] = useState();
@@ -119,7 +119,7 @@ export const Login = () => {
           <div className="col-md-6 center mx-auto">
             <h6>
               You are NOT registered?
-              <Link to="/signup"  style={{textDecoration: 'bold', color: '#7d6757', fontfamily: 'Libre Baskerville', }}>
+              <Link to="/signup" style={{ textDecoration: 'bold', color: '#7d6757', fontfamily: 'Libre Baskerville', }}>
                 <a>Sign Up here</a>
               </Link>
             </h6>
@@ -130,7 +130,7 @@ export const Login = () => {
           <div className="col-md-6 center mx-auto">
             <h6>
               You forgot your password
-              <Link to="/forgetpassword"  style={{textDecoration: 'bold', color: '#7d6757', fontfamily: 'Libre Baskerville', }}>
+              <Link to="/forgetpassword" style={{ textDecoration: 'bold', color: '#7d6757', fontfamily: 'Libre Baskerville', }}>
                 <a>Click here</a>
               </Link>
             </h6>
@@ -142,7 +142,7 @@ export const Login = () => {
 
   const notLoggedInRender = (
     <div>
-      <Navbarlogin />
+      {/* <Navbarlogin />
 
       <div className="container center mt-5 mb-5 ps-5">
         <h6>
@@ -150,7 +150,9 @@ export const Login = () => {
             ? "Congradulations, you´ve been logged in as " + store.user.email
             : "unlogged"}
         </h6>
-      </div>
+      </div> */}
+
+      <Redirect to="/" />
 
       {logOutRender}
     </div>

@@ -17,7 +17,7 @@ export const EditProfile = () => {
 
   console.log('params', params)
 
-  const URLbase = process.env.BACKEND_URL;
+  const URLbase = process.env.URLbase;
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
