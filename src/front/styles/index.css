@@ -42,4 +42,10 @@ input {
 
 .search-inner {
   display: flex;
+  margin-bottom: auto!important;
+}
+
+
+.dropdown-row {
+  color: rgb(203, 185, 121);
 }

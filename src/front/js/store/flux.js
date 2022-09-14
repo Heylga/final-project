@@ -233,7 +233,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({
             userPosition: { latitude: position.coords.latitude, longitude: position.coords.longitude }
           })
-        }, alert('remember to allow your position'))
+        }, alert('Remember to allow your position!'))
       },
 
 

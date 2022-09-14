@@ -27,7 +27,7 @@ const listCards = () => {
   });
   return (
     <div className="conteiner center">
-      <h1 className="text-center pt-5">Recent BookExchange</h1>
+      <h1 className="text-center pt-5">Recent Books Added</h1>
       <br></br>
       <div
         className="d-flex gap-2 m-1"

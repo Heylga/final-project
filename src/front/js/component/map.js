@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useMemo } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-
+import { we } from "./../../img/we.jpg";
 
 import { Circle } from '@react-google-maps/api';
 import { Rectangle } from '@react-google-maps/api';
 import { InfoWindow } from '@react-google-maps/api';
-import Card from "./card.js";
+import Cardmap from "./card-map.js";
 import { Context } from "../store/appContext.js";
 
 import "../../styles/home.css";
@@ -43,7 +43,7 @@ function Map() {
       id: 2,
       title: "We",
       author: "by Yevgeny Zamyatin",
-      imageUrl: 'we.jpg',
+      imageUrl: 'we',
       description:
         "We is set in the twenty-sixth century AD in the OneState: a totalitarian society completely based on rationality and mathematics.",
       buttonLabel: "Find Out More!",
@@ -111,14 +111,14 @@ function Map() {
       <h1 className="text-center pt-5">Books Nearby</h1>
       <br></br>
       <div class="col-md-12 text-center mt-1">
-      <button 
-        className="btn btn-primary text-center"
-        onClick={() => handleOnClick()}> Get coord</button>
-            </div>
+        <button
+          className="btn btn-primary text-center"
+          onClick={() => handleOnClick()}> Check what's close to you!</button>
+      </div>
       <div id="map"></div>
 
       <div className="container center my-5">
-        
+
         <div class="row">
           <GoogleMap
             zoom={13}
@@ -135,7 +135,7 @@ function Map() {
                   {activeMarker === id ? (
                     <InfoWindow onCloseClick={() => setActiveMarker([])}>
                       <div>
-                        <Card
+                        <Cardmap
                           id={id}
                           title={title}
                           author={author}
