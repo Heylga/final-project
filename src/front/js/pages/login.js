@@ -7,11 +7,11 @@ import Footer from "./../component/footer";
 import Navbarlogin from "../component/navbar-login";
 import "../../styles/home.css";
 
-import { URLbase } from "../../../../secrets.js";
+
 
 export const Login = () => {
 
-  const URLbase = process.env.URLbase;
+  const URLbase = process.env.BACKEND_URL;
 
   const { store, actions } = useContext(Context);
   const [email, setEmail] = useState();

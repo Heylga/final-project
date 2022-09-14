@@ -23,7 +23,7 @@ export const Offerbook = () => {
 
 
 
-  const URLbase = process.env.URLbase
+  const URLbase = process.env.BACKEND_URL;
 
   const onSubmit = () => {
     console.log("submit working");

@@ -110,7 +110,7 @@ function Map() {
     <div className="container center">
       <h1 className="text-center pt-5">Books Nearby</h1>
       <br></br>
-      <div class="col-md-12 text-center m-5">
+      <div class="col-md-12 text-center mt-1">
       <button 
         className="btn btn-primary text-center"
         onClick={() => handleOnClick()}> Get coord</button>

@@ -80,7 +80,9 @@ export const Formswap = (props) => {
 
               <Link to={`/user/${id}`}>
                 <a
-                  onClick={() => actions.fetchUser(id)}>Check his profile</a>
+                  onClick={() => actions.fetchUser(id)}
+                  style={{ textDecoration: 'bold', color: '#7d6757', fontfamily: 'Libre Baskerville', }}
+                  >Check profile</a>
               </Link>
             </h6>
 

@@ -16,7 +16,7 @@ export const Signup = () => {
 
   // const URLbase = process.env.URLbase;
 
-  const URLbase = process.env.URLbase
+  const URLbase = process.env.BACKEND_URL
 
 
   const [email, setEmail] = useState();

@@ -17,7 +17,7 @@ export const EditProfile = () => {
 
   console.log('params', params)
 
-  const URLbase = process.env.URLbase;
+  const URLbase = process.env.BACKEND_URL;
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -165,7 +165,9 @@ export const EditProfile = () => {
               </Link> */}
               <p>
                 Looking to manage account security settings? You can find them
-                in the <a href="#"><Link to="/security">Password and authentication</Link></a> page.
+                in the <a href="#"><Link to="/security"
+                style={{ textDecoration: 'bold', color: '#7d6757', fontfamily: 'Libre Baskerville', }}
+                >Password and authentication</Link></a> page.
               </p>
             </div>
           </div>
