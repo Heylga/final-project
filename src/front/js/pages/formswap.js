@@ -60,7 +60,7 @@ export const Formswap = (props) => {
                 </div>
               </div>
 
-              <input type="hidden" name="_next" value="https://swopbook.herokuapp.com/swapmessage" />
+              <input type="hidden" name="_next" value="https://swopbookmain.herokuapp.com/swapmessage" />
               <input type="hidden" name="_captcha" value="false" />
               <input type="hidden" name="_subject" value=" I want to swap a book with you!" />
               <input type="hidden" name="_template" value="box" />
@@ -76,7 +76,7 @@ export const Formswap = (props) => {
 
           <div className="col-md-6 center mx-auto">
 
-            <h6>You want to see more books of {store.user.name}?
+            <h6>You want to see more books?
 
               <Link to={`/user/${id}`}>
                 <a
